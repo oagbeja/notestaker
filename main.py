@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.requests import Request
-from routers import auth_router  # Import your routers
+from routers import auth_router,notes_router # Import your routers
 import logging
 
 
@@ -14,7 +14,8 @@ app = FastAPI()
 def welcome():
     return {"message": "Welcome to Notetaker"}
 
-app.include_router(auth_router.router, prefix="/auth")
+app.include_router(auth_router.router, prefix="/auth",tags=['Authentication'])
+app.include_router(notes_router.router, prefix="/notes",tags=['Note Taking'])
 # app.include_router(users.router)
 
 @app.exception_handler(Exception)
