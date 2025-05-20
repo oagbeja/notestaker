@@ -1,16 +1,12 @@
-from typing import Union
-
+# main.py
 from fastapi import FastAPI
+from routers import auth_router  # Import your routers
 
 app = FastAPI()
 
-users = [{"username":'ade',"password":'123456'}]
+app.include_router(auth_router.router, prefix="/auth")
+# app.include_router(users.router)
 
 @app.get("/")
 def welcome():
     return {"message": "Welcome to Notetaker"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
