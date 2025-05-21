@@ -4,9 +4,17 @@ from fastapi.responses import JSONResponse
 from fastapi.requests import Request
 from routers import auth_router,notes_router # Import your routers
 import logging
+from contextlib import asynccontextmanager
+from database.create_tables import create_tables
 
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await create_tables()  # Run table creation on startup
+    yield  # App runs here
+    # Optional cleanup after shutdown
+    
+app = FastAPI(lifespan=lifespan)
 
 
 

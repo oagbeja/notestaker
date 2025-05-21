@@ -69,8 +69,7 @@ async def login(db: AsyncSession,user_item:auth_model.UserBody):
                 })
         }}
     
-    except Exception as e:        
-        raise HTTPException(
-            status_code= e.status_code or status.HTTP_400_BAD_REQUEST,
-            detail=e.detail or f"Database error: {str(e)}"
-        )
+    except Exception as e:
+        status_code = getattr(e, "status_code", status.HTTP_400_BAD_REQUEST)
+        detail = getattr(e, "detail", f"Database error: {str(e)}")
+        raise HTTPException(status_code=status_code, detail=detail)
